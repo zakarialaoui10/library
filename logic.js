@@ -3,7 +3,7 @@ function Book(title, author, pages, read) {
     this.author = author;
     this.pages = pages;
     this.read = read;
-    this.info = () => {
+    this.info = function () {
         if (this.read == true) {
             return `${this.title} by ${this.author}, ${this.pages} pages, read`;
         } else {
@@ -11,6 +11,3 @@ function Book(title, author, pages, read) {
         }
     };
 }
-
-let bookOne = new Book('Harry Potter', 'J.K Rowling', 255, true);
-console.log(bookOne.info());
