@@ -33,3 +33,7 @@ Simple library web app that allows you to manage your personal book collection. 
 - Git and GitHub
 - Bash
 
+## License
+
+[MIT License](https://github.com/slippyishappy/library/tree/main?tab=MIT-1-ov-file)
+Copyright © 2024 Slippy
