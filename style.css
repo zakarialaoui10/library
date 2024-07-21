@@ -75,7 +75,7 @@ button#close-button {
     justify-content: end;
 }
 
-#submit, #new-book, #close-button, .remove-button {
+#submit, #new-book, #close-button, .remove-button, .button-status {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -108,6 +108,12 @@ button#close-button {
     padding: 0 25px;
 }
 
+button.button-status {
+    margin: 0 12px;
+    display: inline;
+    padding: 0 25px;
+}
+
 button.remove-button {
     background-color: #ff0000;
 }
@@ -123,6 +129,11 @@ button.remove-button {
 
 #submit:hover, #new-book:hover, #close-button:hover {
     background-color: #0052cc;
+}
+
+.status-paragraph {
+    display: flex;
+    align-items: center;
 }
 
 dialog {

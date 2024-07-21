@@ -46,6 +46,7 @@ function displayBookToLibrary() {
         <p><strong>Pages:</strong> ${myLibrary[myLibrary.length - 1].pages}</p>`;
 
         let statusParagraph = document.createElement("p");
+        statusParagraph.classList.add("status-paragraph");
         statusParagraph.innerHTML = "<strong>Status:</strong>";
         card.appendChild(statusParagraph);
 
