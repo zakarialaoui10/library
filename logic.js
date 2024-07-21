@@ -8,6 +8,7 @@ const authorInput = document.querySelector("#author");
 const titleInput = document.querySelector("#title");
 const pagesInput = document.querySelector("#pages");
 const form = document.querySelector("#form");
+let remove = document.createElement("button");
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -28,11 +29,18 @@ function addBookToLibrary(title, author, pages, read) {
 function displayBookToLibrary() {
         let card = document.createElement("div");
         card.classList.add("card");
+        card.setAttribute("id", `card-id-${[myLibrary.length - 1]}`)
         card.innerHTML = `<p><strong>Title:</strong> ${myLibrary[myLibrary.length - 1].title}</p>
         <p><strong>Author:</strong> ${myLibrary[myLibrary.length - 1].author}</p>
         <p><strong>Pages:</strong> ${myLibrary[myLibrary.length - 1].pages}</p>
         <p><strong>Status:</strong> ${myLibrary[myLibrary.length - 1].read}</p>`;
+        remove.innerText = "Remove";
+        remove.classList.add("remove-button");
+        remove.dataset.index = myLibrary.length - 1;
+        console.log(remove.dataset.index);
+        card.appendChild(remove);
         container.appendChild(card);
+
 }
 
 newBook.addEventListener("click", () => {
@@ -62,6 +70,15 @@ submit.addEventListener("click", () => {
 
     form.reset();
     dialog.close();
-})
+});
+
+remove.addEventListener("click", () => {
+    let index = remove.dataset.index;
+    myLibrary.splice(index, 1);
+    let removedCard = document.querySelector(`#card-id-${index}`);
+    removedCard.replaceChildren();
+    removedCard.remove();
+    console.log(myLibrary);
+});
 
 displayBookToLibrary();
