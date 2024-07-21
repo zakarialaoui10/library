@@ -9,6 +9,7 @@ const titleInput = document.querySelector("#title");
 const pagesInput = document.querySelector("#pages");
 const form = document.querySelector("#form");
 let remove;
+let buttonStatus;
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -26,32 +27,55 @@ function addBookToLibrary(title, author, pages, read) {
     myLibrary[myLibrary.length] = new Book(title, author, pages, read);
 };
 
+function toogleReadStatus(index) {
+    if (myLibrary[index].read == "Read") {
+        myLibrary[index].read = "Not read yet";
+        buttonStatus.textContent = myLibrary[index].read;   
+    } else if (myLibrary[index].read == "Not read yet") {
+        myLibrary[index].read = "Read";
+        buttonStatus.textContent = myLibrary[index].read;
+    }
+}
+
 function displayBookToLibrary() {
         let card = document.createElement("div");
         card.classList.add("card");
-        card.setAttribute("id", `card-id-${[myLibrary.length - 1]}`)
+        card.setAttribute("id", `card-id-${[myLibrary.length - 1]}`);
         card.innerHTML = `<p><strong>Title:</strong> ${myLibrary[myLibrary.length - 1].title}</p>
         <p><strong>Author:</strong> ${myLibrary[myLibrary.length - 1].author}</p>
-        <p><strong>Pages:</strong> ${myLibrary[myLibrary.length - 1].pages}</p>
-        <p><strong>Status:</strong> ${myLibrary[myLibrary.length - 1].read}</p>`;
+        <p><strong>Pages:</strong> ${myLibrary[myLibrary.length - 1].pages}</p>`;
+
+        let statusParagraph = document.createElement("p");
+        statusParagraph.innerHTML = "<strong>Status:</strong>";
+        card.appendChild(statusParagraph);
+
+        buttonStatus = document.createElement("button");
+        buttonStatus.classList.add("button-status");
+        buttonStatus.textContent = myLibrary[myLibrary.length - 1].read;
+        buttonStatus.dataset.index = myLibrary.length - 1;
+
+        statusParagraph.appendChild(buttonStatus);
 
         remove = document.createElement("button");
         remove.innerText = "Remove";
         remove.classList.add("remove-button");
         remove.dataset.index = myLibrary.length - 1;
-        console.log(remove.dataset.index);
         card.appendChild(remove);
 
         remove.addEventListener("click", (event) => {
             const clickedButton = event.target;
             let index = clickedButton.dataset.index;
             myLibrary.splice(index, 1);
-            
-            console.log(remove.dataset.index);
+
             let removedCard = document.querySelector(`#card-id-${index}`);
             removedCard.replaceChildren();
             removedCard.remove();
-            console.log(myLibrary);
+        });
+
+        buttonStatus.addEventListener("click", (event) => {
+            const clickedButton = event.target;
+            let index = clickedButton.dataset.index;
+            toogleReadStatus(index);
         });
         
         container.appendChild(card);
