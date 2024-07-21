@@ -7,6 +7,10 @@
 body {
     background-color: #f4f4f9;
     font-family: var(--font);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 h1 {
@@ -15,9 +19,11 @@ h1 {
 
 .book-card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 18px;
     padding: 18px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .card {
@@ -50,15 +56,18 @@ input[type="text"], input[type="number"], select {
     margin: 8px 0;
 }
 
-#close-button {
+button {
+    cursor: pointer;
+}
+
+button#close-button {
     border-radius: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    width:  30px;
-    height: 30px;
-    background-color: transparent;
-    border: 2px solid #2d2c2c;
+    width:  40px;
+    height: 40px;
+    border-style: none;
 }
 
 #close-button-container {
@@ -66,7 +75,10 @@ input[type="text"], input[type="number"], select {
     justify-content: end;
 }
 
-#submit {
+#submit, #new-book, #close-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     appearance: button;
     backface-visibility: hidden;
     background-color: #405cf5;
@@ -75,27 +87,37 @@ input[type="text"], input[type="number"], select {
     box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
     box-sizing: border-box;
     color: #fff;
-    cursor: pointer;
-    font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+    font-family: var(--font);
     font-size: 100%;
     height: 44px;
-    line-height: 1.15;
     margin: 12px 0 0;
     outline: none;
     overflow: hidden;
-    padding: 0 25px;
     position: relative;
     text-align: center;
     text-transform: none;
     transform: translateZ(0);
-    transition: all .2s,box-shadow .08s ease-in;
+    transition: all .2s, box-shadow .08s ease-in-out;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
 }
 
-#submit:focus {
+#submit {
+    padding: 0 25px;
+}
+
+#new-book {
+    width: 60px;
+    height: 60px;
+}
+
+#submit:focus, #new-book:focus, #close-button:focus {
     box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
+}
+
+#submit:hover, #new-book:hover, #close-button:hover {
+    background-color: #0052cc;
 }
 
 dialog {
@@ -104,6 +126,4 @@ dialog {
     border-radius: 8px;
 }
 
-.button-9:disabled {
-  cursor: default;
-}
+

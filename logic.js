@@ -3,9 +3,11 @@ const container = document.querySelector(".book-card-container");
 const dialog = document.querySelector("dialog");
 const newBook = document.querySelector("#new-book");
 const closeButton = document.querySelector("#close-button");
-const inputs = document.querySelectorAll("input");
 const submit = document.querySelector("#submit");
-const inputValues = [];
+const authorInput = document.querySelector("#author");
+const titleInput = document.querySelector("#title");
+const pagesInput = document.querySelector("#pages");
+const form = document.querySelector("#form");
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -24,15 +26,13 @@ function addBookToLibrary(title, author, pages, read) {
 };
 
 function displayBookToLibrary() {
-    for (let i = 0; i < myLibrary.length; i++) {
         let card = document.createElement("div");
         card.classList.add("card");
-        card.innerHTML = `<p><strong>Title:</strong> ${myLibrary[i].title}</p>
-        <p><strong>Author:</strong> ${myLibrary[i].author}</p>
-        <p><strong>Pages:</strong> ${myLibrary[i].pages}</p>
-        <p><strong>Status:</strong> ${myLibrary[i].read}</p>`;
+        card.innerHTML = `<p><strong>Title:</strong> ${myLibrary[myLibrary.length - 1].title}</p>
+        <p><strong>Author:</strong> ${myLibrary[myLibrary.length - 1].author}</p>
+        <p><strong>Pages:</strong> ${myLibrary[myLibrary.length - 1].pages}</p>
+        <p><strong>Status:</strong> ${myLibrary[myLibrary.length - 1].read}</p>`;
         container.appendChild(card);
-    }
 }
 
 newBook.addEventListener("click", () => {
@@ -44,8 +44,24 @@ closeButton.addEventListener("click", () => {
 });
 
 submit.addEventListener("click", () => {
-    addBookToLibrary(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value);
+    const title = titleInput.value;
+    const author = authorInput.value;
+    const pages = parseInt(pagesInput.value);
+    const readRadio = document.querySelector('input[name="option"]:checked'); 
+    let read = "Not read yet";
+    if (readRadio) {
+        read = readRadio.value;
+    }
+
+    if (!title || !author || isNaN(pages) || pages < 1) {
+        return;
+    }
+
+    addBookToLibrary(title, author, pages, read);
     displayBookToLibrary();
+
+    form.reset();
+    dialog.close();
 })
 
 displayBookToLibrary();
