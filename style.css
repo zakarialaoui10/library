@@ -75,7 +75,7 @@ button#close-button {
     justify-content: end;
 }
 
-#submit, #new-book, #close-button {
+#submit, #new-book, #close-button, .remove-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -103,8 +103,13 @@ button#close-button {
     touch-action: manipulation;
 }
 
-#submit {
+#submit, .remove-button {
+    width: 100%;
     padding: 0 25px;
+}
+
+button.remove-button {
+    background-color: #ff0000;
 }
 
 #new-book {
