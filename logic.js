@@ -30,13 +30,12 @@ function addBookToLibrary(title, author, pages, read) {
     myLibrary[myLibrary.length] = new Book(title, author, pages, read);
 };
 
-function toogleReadStatus(index, currentBtn) {
+function toggleReadStatus(index, currentBtn) {
     if (myLibrary[index].read == "Read") {
         myLibrary[index].read = "Not read yet";
         currentBtn.textContent = myLibrary[index].read;   
     } else if (myLibrary[index].read == "Not read yet") {
         myLibrary[index].read = "Read";
-        console.log(myLibrary[index].read);
         currentBtn.textContent = myLibrary[index].read;
     }
 }
@@ -71,16 +70,24 @@ function displayBookToLibrary() {
             const clickedButton = event.target;
             let index = clickedButton.dataset.index;
             myLibrary.splice(index, 1);
+            console.log(myLibrary);
 
             let removedCard = document.querySelector(`#card-id-${index}`);
             removedCard.replaceChildren();
             removedCard.remove();
+
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, newIndex) => {
+                card.id = `card-id-${newIndex}`;
+                card.querySelector('.button-status').dataset.index = newIndex;
+                card.querySelector('.remove-button').dataset.index = newIndex;
+            });
         });
 
         buttonStatus.addEventListener("click", (event) => {
             const clickedButton = event.target;
             let index = clickedButton.dataset.index;
-            toogleReadStatus(index, clickedButton);
+            toggleReadStatus(index, clickedButton);
         });
         
         container.appendChild(card);
