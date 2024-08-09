@@ -11,13 +11,16 @@ const form = document.querySelector("#form");
 let remove;
 let buttonStatus;
 
-function Book(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.info = function () {
-            return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`;
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
+
+    get info() {
+        return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`;
     };
 }
 
@@ -27,13 +30,14 @@ function addBookToLibrary(title, author, pages, read) {
     myLibrary[myLibrary.length] = new Book(title, author, pages, read);
 };
 
-function toogleReadStatus(index) {
+function toogleReadStatus(index, currentBtn) {
     if (myLibrary[index].read == "Read") {
         myLibrary[index].read = "Not read yet";
-        buttonStatus.textContent = myLibrary[index].read;   
+        currentBtn.textContent = myLibrary[index].read;   
     } else if (myLibrary[index].read == "Not read yet") {
         myLibrary[index].read = "Read";
-        buttonStatus.textContent = myLibrary[index].read;
+        console.log(myLibrary[index].read);
+        currentBtn.textContent = myLibrary[index].read;
     }
 }
 
@@ -76,7 +80,7 @@ function displayBookToLibrary() {
         buttonStatus.addEventListener("click", (event) => {
             const clickedButton = event.target;
             let index = clickedButton.dataset.index;
-            toogleReadStatus(index);
+            toogleReadStatus(index, clickedButton);
         });
         
         container.appendChild(card);
