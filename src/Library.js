@@ -1,8 +1,9 @@
 import { Book } from "./Book.js";
 class Library {
-    constructor() {
+    constructor(...initialBooks) {
         this.books = [];
         this.container = document.querySelector(".book-card-container");
+        initialBooks.forEach(book=>this.addBook(book.title, book.author, book.pages, book.read))
     }
 
     addBook(title, author, pages, read) {

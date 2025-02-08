@@ -1,5 +1,8 @@
 import { Library } from "./src/Library.js";
-const myLibrary = new Library();
+import { Book } from "./src/Book.js";
+const myLibrary = new Library(
+    new Book("The Hobbit", "John Ronald Reuel Tolkien", 320, "Not read yet"),
+);
 
 const dialog = document.querySelector("dialog");
 const newBook = document.querySelector("#new-book");
@@ -29,6 +32,3 @@ submit.addEventListener("click", () => {
     form.reset();
     dialog.close();
 });
-
-// Add initial book
-myLibrary.addBook("The Hobbit", "John Ronald Reuel Tolkien", 320, "Not read yet");
