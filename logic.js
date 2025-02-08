@@ -1,14 +1,3 @@
-const myLibrary = [];
-const container = document.querySelector(".book-card-container");
-const dialog = document.querySelector("dialog");
-const newBook = document.querySelector("#new-book");
-const closeButton = document.querySelector("#close-button");
-const submit = document.querySelector("#submit");
-const authorInput = document.querySelector("#author");
-const titleInput = document.querySelector("#title");
-const pagesInput = document.querySelector("#pages");
-const form = document.querySelector("#form");
-
 class Book {
     constructor(title, author, pages, read) {
         this.title = title;
@@ -17,28 +6,38 @@ class Book {
         this.read = read;
     }
 
-    get info() {
-        return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`;
-    };
+    toggleReadStatus() {
+        this.read = this.read === "Read" ? "Not read yet" : "Read";
+    }
 }
 
-myLibrary.push(
-    new Book("The Hobbit", "John Ronald Reuel Tolkien", 320, "Not read yet")
-)
+class Library {
+    constructor() {
+        this.books = [];
+        this.container = document.querySelector(".book-card-container");
+    }
 
-function addBookToLibrary(title, author, pages, read) {
-    myLibrary.push(
-        new Book(title, author, pages, read)
-    )
-};
+    addBook(title, author, pages, read) {
+        const book = new Book(title, author, pages, read);
+        this.books.push(book);
+        this.displayBook(book, this.books.length - 1);
+    }
 
+    removeBook(index) {
+        this.books.splice(index, 1);
+        document.querySelector(`#card-id-${index}`).remove();
+        document.querySelectorAll(".card").forEach((card, newIndex) => {
+            card.id = `card-id-${newIndex}`;
+            card.querySelector(".button-status").dataset.index = newIndex;
+            card.querySelector(".remove-button").dataset.index = newIndex;
+        });
+    }
 
-function toggleReadStatus(index, currentBtn) {
-    const book = myLibrary[index];
-    book.read = book.read === "Read" ? "Not read yet" : "Read";
-    currentBtn.textContent = book.read;
+    displayBook(book, index) {
+        const card = createBookCard(book, index);
+        this.container.appendChild(card);
+    }
 }
-
 
 function createElement(tag, className = "", textContent = "", attributes = {}) {
     const element = document.createElement(tag);
@@ -50,75 +49,61 @@ function createElement(tag, className = "", textContent = "", attributes = {}) {
 
 function createBookCard(book, index) {
     const card = createElement("div", "card", "", { id: `card-id-${index}` });
-
+    
     const title = createElement("p", "", `Title: ${book.title}`);
     const author = createElement("p", "", `Author: ${book.author}`);
     const pages = createElement("p", "", `Pages: ${book.pages}`);
-
+    
     const statusParagraph = createElement("p", "status-paragraph", "Status: ");
     const buttonStatus = createElement("button", "button-status", book.read, { "data-index": index });
     statusParagraph.appendChild(buttonStatus);
-
+    
     const removeButton = createElement("button", "remove-button", "Remove", { "data-index": index });
-
+    
     buttonStatus.addEventListener("click", (event) => {
-        toggleReadStatus(event.target.dataset.index, event.target);
+        const bookIndex = event.target.dataset.index;
+        myLibrary.books[bookIndex].toggleReadStatus();
+        event.target.textContent = myLibrary.books[bookIndex].read;
     });
-
+    
     removeButton.addEventListener("click", (event) => {
-        removeBook(event.target.dataset.index);
+        myLibrary.removeBook(event.target.dataset.index);
     });
-
+    
     card.append(title, author, pages, statusParagraph, removeButton);
     return card;
 }
 
-function removeBook(index) {
-    myLibrary.splice(index, 1);
-    document.querySelector(`#card-id-${index}`).remove();
+const myLibrary = new Library();
 
-    // Update remaining card indexes
-    document.querySelectorAll(".card").forEach((card, newIndex) => {
-        card.id = `card-id-${newIndex}`;
-        card.querySelector(".button-status").dataset.index = newIndex;
-        card.querySelector(".remove-button").dataset.index = newIndex;
-    });
-}
+const dialog = document.querySelector("dialog");
+const newBook = document.querySelector("#new-book");
+const closeButton = document.querySelector("#close-button");
+const submit = document.querySelector("#submit");
+const authorInput = document.querySelector("#author");
+const titleInput = document.querySelector("#title");
+const pagesInput = document.querySelector("#pages");
+const form = document.querySelector("#form");
 
-function displayBookToLibrary() {
-    const book = myLibrary.at(-1);
-    if (!book) return;
-
-    const card = createBookCard(book, myLibrary.length - 1);
-    container.appendChild(card);
-}
-
-
-newBook.addEventListener("click", () => {
-    dialog.showModal();
-});
-
-closeButton.addEventListener("click", () => {
-    dialog.close();
-});
+newBook.addEventListener("click", () => dialog.showModal());
+closeButton.addEventListener("click", () => dialog.close());
 
 submit.addEventListener("click", () => {
     const title = titleInput.value;
     const author = authorInput.value;
     const pages = parseInt(pagesInput.value);
-    const readRadio = document.querySelector('input[name="option"]:checked'); 
+    const readRadio = document.querySelector('input[name="option"]:checked');
     const read = readRadio ? readRadio.value : "Not read yet";
-
+    
     if (!title || !author || isNaN(pages) || pages < 1) {
-        alert("Please fill out all fields .");
+        alert("Please fill out all fields.");
         return;
     }
-
-    addBookToLibrary(title, author, pages, read);
-    displayBookToLibrary();
-
+    
+    myLibrary.addBook(title, author, pages, read);
     form.reset();
     dialog.close();
 });
 
-displayBookToLibrary();
+// Add initial book
+myLibrary.addBook("The Hobbit", "John Ronald Reuel Tolkien", 320, "Not read yet");
