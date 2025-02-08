@@ -112,7 +112,7 @@ submit.addEventListener("click", () => {
     }
 
     if (!title || !author || isNaN(pages) || pages < 1) {
-        alert("Please fill out all fields correctly.");
+        alert("Please fill out all fields .");
         return;
     }
 
