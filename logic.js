@@ -28,6 +28,7 @@ function addBookToLibrary(title, author, pages, read) {
     myLibrary[myLibrary.length] = new Book(title, author, pages, read);
 };
 
+
 function toggleReadStatus(index, currentBtn) {
     const book = myLibrary[index];
     book.read = book.read === "Read" ? "Not read yet" : "Read";
@@ -41,9 +42,9 @@ function displayBookToLibrary() {
         let card = document.createElement("div");
         card.classList.add("card");
         card.setAttribute("id", `card-id-${[myLibrary.length - 1]}`);
-        card.innerHTML = `<p><strong>Title:</strong> ${myLibrary[myLibrary.length - 1].title}</p>
-        <p><strong>Author:</strong> ${myLibrary[myLibrary.length - 1].author}</p>
-        <p><strong>Pages:</strong> ${myLibrary[myLibrary.length - 1].pages}</p>`;
+        card.innerHTML = `<p><strong>Title:</strong> ${myLibrary.at(-1).title}</p>
+        <p><strong>Author:</strong> ${myLibrary.at(-1).author}</p>
+        <p><strong>Pages:</strong> ${myLibrary.at(-1).pages}</p>`;
 
         let statusParagraph = document.createElement("p");
         statusParagraph.classList.add("status-paragraph");
@@ -52,7 +53,7 @@ function displayBookToLibrary() {
 
         buttonStatus = document.createElement("button");
         buttonStatus.classList.add("button-status");
-        buttonStatus.textContent = myLibrary[myLibrary.length - 1].read;
+        buttonStatus.textContent = myLibrary.at(-1).read;
         buttonStatus.dataset.index = myLibrary.length - 1;
 
         statusParagraph.appendChild(buttonStatus);
