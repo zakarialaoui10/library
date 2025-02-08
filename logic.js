@@ -22,7 +22,9 @@ class Book {
     };
 }
 
-myLibrary[0] = new Book("The Hobbit", "John Ronald Reuel Tolkien", 320, "Not read yet");
+myLibrary.push(
+    new Book("The Hobbit", "John Ronald Reuel Tolkien", 320, "Not read yet")
+)
 
 function addBookToLibrary(title, author, pages, read) {
     myLibrary[myLibrary.length] = new Book(title, author, pages, read);
