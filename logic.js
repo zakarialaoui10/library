@@ -27,7 +27,9 @@ myLibrary.push(
 )
 
 function addBookToLibrary(title, author, pages, read) {
-    myLibrary[myLibrary.length] = new Book(title, author, pages, read);
+    myLibrary.push(
+        new Book(title, author, pages, read)
+    )
 };
 
 
@@ -38,60 +40,59 @@ function toggleReadStatus(index, currentBtn) {
 }
 
 
-function displayBookToLibrary() {
-        let remove;
-        let buttonStatus;
-        let card = document.createElement("div");
-        card.classList.add("card");
-        card.setAttribute("id", `card-id-${[myLibrary.length - 1]}`);
-        card.innerHTML = `<p><strong>Title:</strong> ${myLibrary.at(-1).title}</p>
-        <p><strong>Author:</strong> ${myLibrary.at(-1).author}</p>
-        <p><strong>Pages:</strong> ${myLibrary.at(-1).pages}</p>`;
-
-        let statusParagraph = document.createElement("p");
-        statusParagraph.classList.add("status-paragraph");
-        statusParagraph.innerHTML = "<strong>Status:</strong>";
-        card.appendChild(statusParagraph);
-
-        buttonStatus = document.createElement("button");
-        buttonStatus.classList.add("button-status");
-        buttonStatus.textContent = myLibrary.at(-1).read;
-        buttonStatus.dataset.index = myLibrary.length - 1;
-
-        statusParagraph.appendChild(buttonStatus);
-
-        remove = document.createElement("button");
-        remove.innerText = "Remove";
-        remove.classList.add("remove-button");
-        remove.dataset.index = myLibrary.length - 1;
-        card.appendChild(remove);
-
-        remove.addEventListener("click", (event) => {
-            const clickedButton = event.target;
-            let index = clickedButton.dataset.index;
-            myLibrary.splice(index, 1);
-            console.log(myLibrary);
-
-            let removedCard = document.querySelector(`#card-id-${index}`);
-            removedCard.replaceChildren();
-            removedCard.remove();
-
-            const cards = document.querySelectorAll('.card');
-            cards.forEach((card, newIndex) => {
-                card.id = `card-id-${newIndex}`;
-                card.querySelector('.button-status').dataset.index = newIndex;
-                card.querySelector('.remove-button').dataset.index = newIndex;
-            });
-        });
-
-        buttonStatus.addEventListener("click", (event) => {
-            const clickedButton = event.target;
-            let index = clickedButton.dataset.index;
-            toggleReadStatus(index, clickedButton);
-        });
-        
-        container.appendChild(card);
+function createElement(tag, className = "", textContent = "", attributes = {}) {
+    const element = document.createElement(tag);
+    if (className) element.classList.add(className);
+    if (textContent) element.textContent = textContent;
+    Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+    return element;
 }
+
+function createBookCard(book, index) {
+    const card = createElement("div", "card", "", { id: `card-id-${index}` });
+
+    const title = createElement("p", "", `Title: ${book.title}`);
+    const author = createElement("p", "", `Author: ${book.author}`);
+    const pages = createElement("p", "", `Pages: ${book.pages}`);
+
+    const statusParagraph = createElement("p", "status-paragraph", "Status: ");
+    const buttonStatus = createElement("button", "button-status", book.read, { "data-index": index });
+    statusParagraph.appendChild(buttonStatus);
+
+    const removeButton = createElement("button", "remove-button", "Remove", { "data-index": index });
+
+    buttonStatus.addEventListener("click", (event) => {
+        toggleReadStatus(event.target.dataset.index, event.target);
+    });
+
+    removeButton.addEventListener("click", (event) => {
+        removeBook(event.target.dataset.index);
+    });
+
+    card.append(title, author, pages, statusParagraph, removeButton);
+    return card;
+}
+
+function removeBook(index) {
+    myLibrary.splice(index, 1);
+    document.querySelector(`#card-id-${index}`).remove();
+
+    // Update remaining card indexes
+    document.querySelectorAll(".card").forEach((card, newIndex) => {
+        card.id = `card-id-${newIndex}`;
+        card.querySelector(".button-status").dataset.index = newIndex;
+        card.querySelector(".remove-button").dataset.index = newIndex;
+    });
+}
+
+function displayBookToLibrary() {
+    const book = myLibrary.at(-1);
+    if (!book) return;
+
+    const card = createBookCard(book, myLibrary.length - 1);
+    container.appendChild(card);
+}
+
 
 newBook.addEventListener("click", () => {
     dialog.showModal();
