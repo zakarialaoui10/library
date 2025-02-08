@@ -8,8 +8,6 @@ const authorInput = document.querySelector("#author");
 const titleInput = document.querySelector("#title");
 const pagesInput = document.querySelector("#pages");
 const form = document.querySelector("#form");
-let remove;
-let buttonStatus;
 
 class Book {
     constructor(title, author, pages, read) {
@@ -41,6 +39,8 @@ function toggleReadStatus(index, currentBtn) {
 }
 
 function displayBookToLibrary() {
+        let remove;
+        let buttonStatus;
         let card = document.createElement("div");
         card.classList.add("card");
         card.setAttribute("id", `card-id-${[myLibrary.length - 1]}`);
