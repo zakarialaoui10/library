@@ -29,14 +29,11 @@ function addBookToLibrary(title, author, pages, read) {
 };
 
 function toggleReadStatus(index, currentBtn) {
-    if (myLibrary[index].read == "Read") {
-        myLibrary[index].read = "Not read yet";
-        currentBtn.textContent = myLibrary[index].read;   
-    } else if (myLibrary[index].read == "Not read yet") {
-        myLibrary[index].read = "Read";
-        currentBtn.textContent = myLibrary[index].read;
-    }
+    const book = myLibrary[index];
+    book.read = book.read === "Read" ? "Not read yet" : "Read";
+    currentBtn.textContent = book.read;
 }
+
 
 function displayBookToLibrary() {
         let remove;
