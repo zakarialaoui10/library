@@ -107,10 +107,7 @@ submit.addEventListener("click", () => {
     const author = authorInput.value;
     const pages = parseInt(pagesInput.value);
     const readRadio = document.querySelector('input[name="option"]:checked'); 
-    let read = "Not read yet";
-    if (readRadio) {
-        read = readRadio.value;
-    }
+    const read = readRadio ? readRadio.value : "Not read yet";
 
     if (!title || !author || isNaN(pages) || pages < 1) {
         alert("Please fill out all fields .");
