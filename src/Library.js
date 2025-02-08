@@ -23,7 +23,7 @@ class Library {
     }
 
     displayBook(book, index) {
-        const card = createBookCard(book, index);
+        const card = createBookCard(this, book, index);
         this.container.appendChild(card);
     }
 }
@@ -36,7 +36,7 @@ function createElement(tag, className = "", textContent = "", attributes = {}) {
     return element;
 }
 
-function createBookCard(book, index) {
+function createBookCard(Library, book, index) {
     const card = createElement("div", "card", "", { id: `card-id-${index}` });
     
     const title = createElement("p", "", `Title: ${book.title}`);
@@ -51,12 +51,12 @@ function createBookCard(book, index) {
     
     buttonStatus.addEventListener("click", (event) => {
         const bookIndex = event.target.dataset.index;
-        myLibrary.books[bookIndex].toggleReadStatus();
-        event.target.textContent = myLibrary.books[bookIndex].read;
+        Library.books[bookIndex].toggleReadStatus();
+        event.target.textContent = Library.books[bookIndex].read;
     });
     
     removeButton.addEventListener("click", (event) => {
-        myLibrary.removeBook(event.target.dataset.index);
+        Library.removeBook(event.target.dataset.index);
     });
     
     card.append(title, author, pages, statusParagraph, removeButton);

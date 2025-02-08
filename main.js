@@ -32,3 +32,6 @@ submit.addEventListener("click", () => {
     form.reset();
     dialog.close();
 });
+
+// Add initial book
+// myLibrary.addBook("The Hobbit", "John Ronald Reuel Tolkien", 320, "Not read yet");
